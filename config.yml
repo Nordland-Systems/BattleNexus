@@ -1,0 +1,22 @@
+# BattleNexus-CONFIG
+#
+# DATABASE:
+#
+
+  Basic:
+    prefix: '§5[BattleNexus] '
+    language: 'de_DE'
+  MySQL:
+    host: ''
+    port: ''
+    database: ''
+    user: ''
+    password: ''
+#
+#
+# MESSAGES:
+#
+#
+#
+# OTHER SETTINGS:
+#

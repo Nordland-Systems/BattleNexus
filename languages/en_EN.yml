@@ -1,0 +1,14 @@
+# Official English Version
+# BattleNexus 1.0
+  
+  LanguageLoaded: '&2Language "&fEnglish&2" loaded'
+   UnknownError: '&2Unknown Error!'
+  PluginDisabled: '&2Plugin deactivated'
+  noPerms: '&cYou are not allowed to use this command!'
+  comingsoon: '&7>> &cComing Soon!'
+  VIP: '&cBuy &6VIP&c, to get access to exclusive stuff!'
+  Staff: '&cThis Area is only for Team-Members!'
+  
+  Eco:
+    ConSuccess: '&aConnected to Vault!'
+    ConFailure: '&cCouldnt connect to Vault!'

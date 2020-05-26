@@ -1,0 +1,14 @@
+# Offizielle Deutsche Version
+# BattleNexus 1.0
+  
+  LanguageLoaded: '&2Sprache "&fDeutsch&2" wurde geladen'
+  UnknownError: '&2Unbekannter Fehler!'
+  PluginDisabled: '&2Plugin deaktiviert'
+  noPerms: '&cDiesen Befehl darfst du nicht nutzen'
+  comingsoon: '&7>> &cKommt bald!'
+  VIP: '&cKaufe dir &6VIP&c, um Zugang zu exlusiven Inhalten zu erhalten!'
+  Staff: '&cDieser Bereich ist nur für Mitarbeiter!'
+  
+  Eco:
+    ConSuccess: '&aMit Vault verbunden!'
+    ConFailure: '&cKonnte nicht mit Vault verbinden!'

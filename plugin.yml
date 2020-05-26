@@ -1,0 +1,7 @@
+main: de.stevenpaw.battlenexus.main.Main
+version: 1.0
+name: BattleNexus
+author: StevenPaw
+api-version: 1.15
+
+depend: [Vault, MySQL]
