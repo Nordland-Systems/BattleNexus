@@ -46,12 +46,22 @@ public class Tools {
 		String s = "-";
 		String Line = new String(new char[Length + 6]).replace("\0", s);
 		
-		Tools.sendToConsole("§4"+Line);
+		sendToConsole("§4"+Line);
 		if(e != null) {
 			sendToConsole("§4|||" + text + "||| - §f" + e);
 		} else {
 			sendToConsole("§4|||" + text + "||| - §f" + cfgM("UnknownError"));
 		}
-		Tools.sendToConsole("§4" + Line);
+		sendToConsole("§4" + Line);
+	}
+	
+	public static void ConsoleNoticeMessage(String text) {
+		Integer Length = text.length();
+		String s = "-";
+		String Line = new String(new char[Length + 6]).replace("\0", s);
+		
+		sendToConsole("§e"+Line);
+		sendToConsole("§e|||" + text + "||| - §e");
+		sendToConsole("§e" + Line);
 	}
 }
