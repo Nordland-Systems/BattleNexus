@@ -64,4 +64,8 @@ public class Tools {
 		sendToConsole("§e|||" + text + "||| - §e");
 		sendToConsole("§e" + Line);
 	}
+	
+	public static void PlayerTitle(Player p, String Title, String subTitle, ChatColor c, int duration, int fade) {
+		p.sendTitle(Title, subTitle, fade, duration, fade);
+	}
 }

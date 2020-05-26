@@ -17,12 +17,17 @@ public class Main extends JavaPlugin{
 
 	private static Main plugin;
 	private static Main instance;
+	
 	public static File cfgfile;
 	public static FileConfiguration cfg;
+	
+	public static File pfile;
+	public static FileConfiguration pcfg;
 
 	public static File langpath;
 	public static File langfile;
 	public static FileConfiguration lang;
+	
 
 	public static String prefix;
 
@@ -47,6 +52,28 @@ public class Main extends JavaPlugin{
 		} else {
 			Tools.ConsoleErrorMessage(Tools.cfgM("Eco.ConFailure"), null);
 		}	
+		
+		
+		Bukkit.getScheduler().runTaskTimer(this, new Runnable()
+		{
+			int time = 3; //or any other number you want to start countdown from
+
+			@Override
+			public void run()
+			{
+				if (this.time == 0)
+				{
+					return;
+				}
+
+				for (final org.bukkit.entity.Player player : Bukkit.getOnlinePlayers())
+				{
+					player.sendMessage(this.time + " second(s) remains!");
+				}
+
+				this.time--;
+			}
+		}, 0L, 20L);
 
 	}
 	
@@ -56,10 +83,16 @@ public class Main extends JavaPlugin{
 		saveDefaultConfig();
 		Main.cfgfile = new File("plugins/BattleNexus", "config.yml");
 		Main.cfg = YamlConfiguration.loadConfiguration(Main.cfgfile);
+		
+		//loadplayerdata
+		Main.pfile = new File("plugins/BattleNexus", "players.yml");
+		Main.pcfg = YamlConfiguration.loadConfiguration(Main.cfgfile);
 
 		//loadPrefix
 		String prefixRaw = cfg.getString("Basic.prefix");
 		prefix = ChatColor.translateAlternateColorCodes('&', prefixRaw);
+		
+		Tools.sendToConsole(Tools.cfgM("ConfigsLoaded"));
 		
 		//loadLanguages
 		Main.langfile = new File("plugins/BattleNexus/languages/", cfg.getString("Basic.language") + ".yml");
