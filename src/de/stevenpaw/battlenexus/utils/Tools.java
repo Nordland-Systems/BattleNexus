@@ -12,22 +12,26 @@ public class Tools {
 
 	static Economy economy = Main.getEconomy();
 
+	
 	//add Money to Player
 	public static void addMoney(double Amount, Player p) {
 		economy.depositPlayer(p, Amount);
 	}
 
+	
 	//take Money off Player
 	public static void takeMoney(double Amount, Player p) {
 		economy.depositPlayer(p, -Amount);
 	}
 
+	
 	//send Message to Console
 	public static void sendToConsole(String text) {
 		ConsoleCommandSender console = Bukkit.getConsoleSender();
 		console.sendMessage(Main.prefix + text);
 	}
 
+	
 	//send Message to Console
 	public static void DebugMessage(String text) {
 		if (Main.debug) {
@@ -36,11 +40,13 @@ public class Tools {
 		}
 	}
 
+	
 	//broadcast Serverwide
 	public static void broadcastAll(String text) {
 		Bukkit.broadcastMessage(Main.prefix + text);
 	}
 
+	
 	//Get Message from Language
 	public static String cfgM(String pointer) {
 		String output;
@@ -54,6 +60,7 @@ public class Tools {
 		return output;
 	}
 
+	
 	//Send Error Message
 	public static void ConsoleErrorMessage(String text, Exception e) {
 		Integer Length = text.length();
@@ -69,6 +76,8 @@ public class Tools {
 		sendToConsole("§4" + Line);
 	}
 
+	
+	//Send Notice Message
 	public static void ConsoleNoticeMessage(String text) {
 		Integer Length = text.length();
 		String s = "-";
@@ -79,7 +88,9 @@ public class Tools {
 		sendToConsole("§e" + Line);
 	}
 
-	public static void PlayerTitle(Player p, String Title, String subTitle, ChatColor c, int duration, int fade) {
+	
+	//Send Title to Player
+	public static void pTitle(Player p, String Title, String subTitle, ChatColor c, int duration, int fade) {
 		p.sendTitle(Title, subTitle, fade, duration, fade);
 	}
 }

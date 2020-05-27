@@ -10,14 +10,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import de.stevenpaw.battlenexus.database.SQL_Tools;
+import de.stevenpaw.battlenexus.game.ArenaManager;
 import de.stevenpaw.battlenexus.listener.PlayerListener;
 import de.stevenpaw.battlenexus.utils.Tools;
 import net.md_5.bungee.api.ChatColor;
-import net.milkbowl.vault.Vault;
 import net.milkbowl.vault.economy.Economy;
 
 public class Main extends JavaPlugin{
 
+	//== VARIABLES =================
 	private static Main plugin;
 	private static Main instance;
 	
@@ -36,24 +37,30 @@ public class Main extends JavaPlugin{
 	public static Boolean debug;
 
     private static Economy economy = null;
+    private ArenaManager arenaManager;
+    //------------------------------
+    
 
-
-	// When plugin is first enabled
+	//== ENABLE PLUGIN =============
 	@Override
 	public void onEnable() {
 
 		//MySQL.connect();
 		//MySQL.createTable();
 		
+		//lade Config
 		loadConfig();
 		
+		//plugin festlegen und economy laden
 		setInstance(this);
 		plugin = this;
 		this.setupEconomy();
 		
+		//Listener laden
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new PlayerListener(), this);
 		
+		//runnable
 		Bukkit.getScheduler().runTaskTimer(this, new Runnable()
 		{
 			int time = 3; //or any other number you want to start countdown from
@@ -75,15 +82,31 @@ public class Main extends JavaPlugin{
 			}
 		}, 0L, 20L);
 		
+		//Check for successful Economy Hook
 		if(setupEconomy()) {
 			Bukkit.getConsoleSender().sendMessage(prefix + Tools.cfgM("Eco.ConSuccess"));
 		} else {
 			Tools.ConsoleErrorMessage(Tools.cfgM("Eco.ConFailure"), null);
 			Bukkit.getPluginManager().disablePlugin(this);
 		}	
+		
+		//setup Arena Manager
+		arenaManager = new ArenaManager();
 	}
+	//------------------------------
 	
 	
+	//== DISABLE PLUGIN ============
+	@Override
+	public void onDisable() {
+		Bukkit.getConsoleSender().sendMessage(prefix + "§c§lPlugin disabled!");
+		SQL_Tools.disconnect();
+	    arenaManager = null;
+	}
+	//------------------------------
+	
+	
+	//== CONFIGS ===================
 	public void loadConfig() {
 		//loadConfig
 		saveDefaultConfig();
@@ -127,19 +150,10 @@ public class Main extends JavaPlugin{
 		Tools.DebugMessage(Tools.cfgM("Load.LanguageLoaded"));
 		Tools.ConsoleNoticeMessage(Tools.cfgM("Load.AllLoaded"));
 	}
-
-
-	// When plugin is disabled
-	@Override
-	public void onDisable() {
-		Bukkit.getConsoleSender().sendMessage(prefix + "§c§lPlugin disabled!");
-		SQL_Tools.disconnect();
-	}
-
-
-
-
-	//== PLUGIN-INSTANZ=============
+    //------------------------------
+	
+	
+	//== PLUGIN-INSTANZ ============
 	public static Main getInstance() {
 		return instance;
 	}	
@@ -154,34 +168,17 @@ public class Main extends JavaPlugin{
 	//-----------------------------
 
 
-
 	//== ECONOMY ==================
     private boolean setupEconomy() {
-    	    	
-    	if(Bukkit.getPluginManager().getPlugin("Vault") instanceof Vault) {
-            RegisteredServiceProvider<Economy> service = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-            if(service != null) {
-                economy = service.getProvider();
-                return false;
-            } else {
-            	return true;
-            }
-        } else {
-        	return false;
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
         }
-    	
-    	
-//    	if (getServer().getPluginManager().getPlugin("Vault") == null) {
-//    		Tools.DebugMessage("Plugin Vault fehlt");
-//            return false;
-//        }
-//        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-//        if (rsp == null) {
-//    		Tools.DebugMessage("rsp fehlt");
-//            return false;
-//        }
-//        economy = rsp.getProvider();
-//        return economy != null;
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        economy = rsp.getProvider();
+        return economy != null;
     }
 
 	public static Economy getEconomy() {
@@ -189,4 +186,10 @@ public class Main extends JavaPlugin{
 	}
 	//-----------------------------
 
+	
+	//== ARENA MANAGER ============
+    public ArenaManager getArenaManager() {
+        return arenaManager;
+    }
+    //-----------------------------
 }

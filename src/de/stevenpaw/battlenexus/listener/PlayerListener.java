@@ -16,6 +16,8 @@ public class PlayerListener implements Listener{
 
 		PlayerTools.SaveInventory(event.getPlayer());
 		Tools.broadcastAll("Balance: " + Main.getEconomy().getBalance(event.getPlayer()));
+		
+		
     }
 	
 }
