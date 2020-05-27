@@ -4,4 +4,4 @@ name: BattleNexus
 author: StevenPaw
 api-version: 1.15
 
-depend: [Vault, MySQL]
+depend: [Vault,MySQL]

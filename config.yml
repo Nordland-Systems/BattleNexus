@@ -2,21 +2,21 @@
 #
 # DATABASE:
 #
-
+# DEBUG-------------
+# Keep this on false, except when you need to report a bug
+  Debug: true
+  
+# BASIC THINGS------
   Basic:
-    prefix: '§5[BattleNexus] '
+    prefix: '&5[BattleNexus] '
     language: 'de_DE'
+    
+# MYSQL
   MySQL:
     host: ''
     port: ''
     database: ''
     user: ''
     password: ''
-#
-#
-# MESSAGES:
-#
-#
-#
+    
 # OTHER SETTINGS:
-#

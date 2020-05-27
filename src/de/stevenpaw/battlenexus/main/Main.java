@@ -5,12 +5,15 @@ import java.io.File;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 import de.stevenpaw.battlenexus.database.SQL_Tools;
+import de.stevenpaw.battlenexus.listener.PlayerListener;
 import de.stevenpaw.battlenexus.utils.Tools;
 import net.md_5.bungee.api.ChatColor;
+import net.milkbowl.vault.Vault;
 import net.milkbowl.vault.economy.Economy;
 
 public class Main extends JavaPlugin{
@@ -30,8 +33,9 @@ public class Main extends JavaPlugin{
 	
 
 	public static String prefix;
+	public static Boolean debug;
 
-	public static Economy economy = null;
+    private static Economy economy = null;
 
 
 	// When plugin is first enabled
@@ -46,13 +50,9 @@ public class Main extends JavaPlugin{
 		setInstance(this);
 		plugin = this;
 		this.setupEconomy();
-
-		if(setupEconomy()) {
-			Bukkit.getConsoleSender().sendMessage(prefix + Tools.cfgM("Eco.ConSuccess"));
-		} else {
-			Tools.ConsoleErrorMessage(Tools.cfgM("Eco.ConFailure"), null);
-		}	
 		
+		PluginManager pm = Bukkit.getPluginManager();
+		pm.registerEvents(new PlayerListener(), this);
 		
 		Bukkit.getScheduler().runTaskTimer(this, new Runnable()
 		{
@@ -74,7 +74,13 @@ public class Main extends JavaPlugin{
 				this.time--;
 			}
 		}, 0L, 20L);
-
+		
+		if(setupEconomy()) {
+			Bukkit.getConsoleSender().sendMessage(prefix + Tools.cfgM("Eco.ConSuccess"));
+		} else {
+			Tools.ConsoleErrorMessage(Tools.cfgM("Eco.ConFailure"), null);
+			Bukkit.getPluginManager().disablePlugin(this);
+		}	
 	}
 	
 	
@@ -92,7 +98,13 @@ public class Main extends JavaPlugin{
 		String prefixRaw = cfg.getString("Basic.prefix");
 		prefix = ChatColor.translateAlternateColorCodes('&', prefixRaw);
 		
-		Tools.sendToConsole(Tools.cfgM("ConfigsLoaded"));
+		//loadDebug
+		if(cfg.getBoolean("Debug")) {
+			debug = true;
+			Tools.DebugMessage("Debug-Mode is active! Don't use this if you have no Problems!");
+		} else debug = false;
+		
+		Tools.DebugMessage("Loaded all Configs!");
 		
 		//loadLanguages
 		Main.langfile = new File("plugins/BattleNexus/languages/", cfg.getString("Basic.language") + ".yml");
@@ -106,20 +118,21 @@ public class Main extends JavaPlugin{
 			try {
 			saveResource("languages/" + cfg.getString("Basic.language") + ".yml", true);
 			} catch(Exception e) {
-				Tools.ConsoleErrorMessage("LANGUAGEFILE NOT FOUND", e);
+				Tools.ConsoleErrorMessage("FATAL ERROR: LANGUAGEFILE NOT FOUND", e);
+				Bukkit.getPluginManager().disablePlugin(this);
 			}
 		}
 		Main.lang = YamlConfiguration.loadConfiguration(Main.langfile);
 		
-		Tools.sendToConsole(Tools.cfgM("LanguageLoaded"));
+		Tools.DebugMessage(Tools.cfgM("Load.LanguageLoaded"));
+		Tools.ConsoleNoticeMessage(Tools.cfgM("Load.AllLoaded"));
 	}
 
 
 	// When plugin is disabled
 	@Override
 	public void onDisable() {
-		Tools.sendToConsole(Tools.cfgM("Plugin.disabled"));
-		Bukkit.getConsoleSender().sendMessage(prefix + "§c§ldisabled!");
+		Bukkit.getConsoleSender().sendMessage(prefix + "§c§lPlugin disabled!");
 		SQL_Tools.disconnect();
 	}
 
@@ -143,19 +156,33 @@ public class Main extends JavaPlugin{
 
 
 	//== ECONOMY ==================
-	private boolean setupEconomy(){
-
-		if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-			return false;
-		}
-
-		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-		if (rsp == null) {
-			return false;
-		}
-		economy = rsp.getProvider();
-		return economy != null;
-	}
+    private boolean setupEconomy() {
+    	    	
+    	if(Bukkit.getPluginManager().getPlugin("Vault") instanceof Vault) {
+            RegisteredServiceProvider<Economy> service = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+            if(service != null) {
+                economy = service.getProvider();
+                return false;
+            } else {
+            	return true;
+            }
+        } else {
+        	return false;
+        }
+    	
+    	
+//    	if (getServer().getPluginManager().getPlugin("Vault") == null) {
+//    		Tools.DebugMessage("Plugin Vault fehlt");
+//            return false;
+//        }
+//        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+//        if (rsp == null) {
+//    		Tools.DebugMessage("rsp fehlt");
+//            return false;
+//        }
+//        economy = rsp.getProvider();
+//        return economy != null;
+    }
 
 	public static Economy getEconomy() {
 		return economy;
