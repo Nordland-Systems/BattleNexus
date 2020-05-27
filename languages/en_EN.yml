@@ -1,8 +1,12 @@
 # Official English Version
 # BattleNexus 1.0
+
+
+# MUSS NOCH ÜBERARBEITET WERDEN!!!!!
   
   LanguageLoaded: '&2Language "&fEnglish&2" loaded'
-   UnknownError: '&2Unknown Error!'
+  ConfigsLoaded: '&2Configs loaded!'
+  UnknownError: '&2Unknown Error!'
   PluginDisabled: '&2Plugin deactivated'
   noPerms: '&cYou are not allowed to use this command!'
   comingsoon: '&7>> &cComing Soon!'

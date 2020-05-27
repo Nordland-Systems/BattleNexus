@@ -1,13 +1,17 @@
 # Offizielle Deutsche Version
 # BattleNexus 1.0
   
-  LanguageLoaded: '&2Sprache "&fDeutsch&2" wurde geladen'
   UnknownError: '&2Unbekannter Fehler!'
   PluginDisabled: '&2Plugin deaktiviert'
   noPerms: '&cDiesen Befehl darfst du nicht nutzen'
   comingsoon: '&7>> &cKommt bald!'
   VIP: '&cKaufe dir &6VIP&c, um Zugang zu exlusiven Inhalten zu erhalten!'
   Staff: '&cDieser Bereich ist nur für Mitarbeiter!'
+  
+  Load:
+    LanguageLoaded: '&2Sprache "&fDeutsch&2" wurde geladen!'
+    ConfigsLoaded: '&2Konfigurationen geladen!'
+    AllLoaded: '&2Alle Configs fertig geladen'
   
   Eco:
     ConSuccess: '&aMit Vault verbunden!'
