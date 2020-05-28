@@ -45,6 +45,11 @@ public class Tools {
 	public static void broadcastAll(String text) {
 		Bukkit.broadcastMessage(Main.prefix + text);
 	}
+	
+	//broadcast To one player
+	public static void broadcastPlayer(String text, Player p) {
+		p.sendMessage(Main.prefix + text);
+	}
 
 	
 	//Get Message from Language

@@ -16,3 +16,7 @@
   Eco:
     ConSuccess: '&aMit Vault verbunden!'
     ConFailure: '&cKonnte nicht mit Vault verbinden!'
+    
+  Commands:
+    ArenaCreated: '&aErfolgreich!'
+    ArenaCreationFailed: '&cDie Arena konnte nicht erstellt werden!'

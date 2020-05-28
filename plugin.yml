@@ -5,3 +5,9 @@ author: StevenPaw
 api-version: 1.15
 
 depend: [Vault,MySQL]
+
+
+commands:
+   bn:
+      description: All Arena-Commands from BattleNexus
+      usage: /bn <createArena/removearena/addspawn...>

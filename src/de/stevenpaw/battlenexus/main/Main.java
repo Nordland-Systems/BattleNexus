@@ -9,6 +9,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import de.stevenpaw.battlenexus.commands.Commands;
 import de.stevenpaw.battlenexus.database.SQL_Tools;
 import de.stevenpaw.battlenexus.game.ArenaManager;
 import de.stevenpaw.battlenexus.listener.PlayerListener;
@@ -92,6 +93,10 @@ public class Main extends JavaPlugin{
 		
 		//setup Arena Manager
 		arenaManager = new ArenaManager();
+		
+		//setup Commands
+        this.getCommand("bn").setExecutor(new Commands());
+        this.getCommand("bn").setTabCompleter(new Commands());
 	}
 	//------------------------------
 	
