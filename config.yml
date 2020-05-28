@@ -9,7 +9,7 @@
 # BASIC THINGS------
   Basic:
     prefix: '&5[BattleNexus] '
-    language: 'de_DE'
+    language: 'DE'
     
 # MYSQL
   MySQL:

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import de.stevenpaw.battlenexus.database.SQL_Arenas;
 import de.stevenpaw.battlenexus.utils.Tools;
 
 
@@ -24,7 +25,7 @@ public class ArenaManager {
 
 		if(arenas.get(name) != null) {
 			arenas.put(name, new Arena(name, 1, 2, p.getLocation()));
-			if(!SaveArenas()) {
+			if(SaveArenas()) {
 				works = true;
 			}
 		}
@@ -34,7 +35,9 @@ public class ArenaManager {
 
 	public static Boolean SaveArenas() {
 
-		return false;
+		SQL_Arenas.saveArenas();
+		
+		return true;
 	}
 
 	public static List<String> getAllArenaNames() {

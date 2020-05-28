@@ -1,6 +1,7 @@
 package de.stevenpaw.battlenexus.main;
 
 import java.io.File;
+import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,49 +23,46 @@ public class Main extends JavaPlugin{
 	//== VARIABLES =================
 	private static Main plugin;
 	private static Main instance;
-	
+
 	public static File cfgfile;
 	public static FileConfiguration cfg;
-	
+
 	public static File pfile;
 	public static FileConfiguration pcfg;
 
 	public static File langpath;
-	public static File langfile;
-	public static FileConfiguration lang;
-	
+	public static HashMap<String, File> langfile;
+	public static HashMap<String, FileConfiguration> lang;
+
 
 	public static String prefix;
 	public static Boolean debug;
 
-    private static Economy economy = null;
-    private ArenaManager arenaManager;
-    //------------------------------
-    
+	private static Economy economy = null;
+	private ArenaManager arenaManager;
+	//------------------------------
+
 
 	//== ENABLE PLUGIN =============
 	@Override
 	public void onEnable() {
 
-		//MySQL.connect();
-		//MySQL.createTable();
-		
 		//lade Config
 		loadConfig();
-		
+
 		//plugin festlegen und economy laden
 		setInstance(this);
 		plugin = this;
 		this.setupEconomy();
-		
+
 		//Listener laden
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new PlayerListener(), this);
-		
+
 		//runnable
 		Bukkit.getScheduler().runTaskTimer(this, new Runnable()
 		{
-			int time = 3; //or any other number you want to start countdown from
+			int time = 100; //or any other number you want to start countdown from
 
 			@Override
 			public void run()
@@ -82,82 +80,120 @@ public class Main extends JavaPlugin{
 				this.time--;
 			}
 		}, 0L, 20L);
-		
+
 		//Check for successful Economy Hook
 		if(setupEconomy()) {
-			Bukkit.getConsoleSender().sendMessage(prefix + Tools.cfgM("Eco.ConSuccess"));
+			Bukkit.getConsoleSender().sendMessage(prefix + Tools.cfgM("Eco.ConSuccess", null));
 		} else {
-			Tools.ConsoleErrorMessage(Tools.cfgM("Eco.ConFailure"), null);
+			Tools.ConsoleErrorMessage(Tools.cfgM("Eco.ConFailure", null), null);
 			Bukkit.getPluginManager().disablePlugin(this);
 		}	
-		
+
 		//setup Arena Manager
 		arenaManager = new ArenaManager();
-		
+
 		//setup Commands
-        this.getCommand("bn").setExecutor(new Commands());
-        this.getCommand("bn").setTabCompleter(new Commands());
+		this.getCommand("bn").setExecutor(new Commands());
+		this.getCommand("bn").setTabCompleter(new Commands());
 	}
 	//------------------------------
-	
-	
+
+
 	//== DISABLE PLUGIN ============
 	@Override
 	public void onDisable() {
 		Bukkit.getConsoleSender().sendMessage(prefix + "§c§lPlugin disabled!");
 		SQL_Tools.disconnect();
-	    arenaManager = null;
+		arenaManager = null;
 	}
 	//------------------------------
-	
-	
+
+
 	//== CONFIGS ===================
 	public void loadConfig() {
 		//loadConfig
 		saveDefaultConfig();
-		Main.cfgfile = new File("plugins/BattleNexus", "config.yml");
-		Main.cfg = YamlConfiguration.loadConfiguration(Main.cfgfile);
-		
+		cfgfile = new File("plugins/BattleNexus", "config.yml");
+		cfg = YamlConfiguration.loadConfiguration(Main.cfgfile);
+
 		//loadplayerdata
-		Main.pfile = new File("plugins/BattleNexus", "players.yml");
-		Main.pcfg = YamlConfiguration.loadConfiguration(Main.cfgfile);
+		pfile = new File("plugins/BattleNexus", "players.yml");
+		pcfg = YamlConfiguration.loadConfiguration(Main.cfgfile);
 
 		//loadPrefix
 		String prefixRaw = cfg.getString("Basic.prefix");
 		prefix = ChatColor.translateAlternateColorCodes('&', prefixRaw);
-		
+
 		//loadDebug
 		if(cfg.getBoolean("Debug")) {
 			debug = true;
 			Tools.DebugMessage("Debug-Mode is active! Don't use this if you have no Problems!");
 		} else debug = false;
-		
+
 		Tools.DebugMessage("Loaded all Configs!");
-		
+
+
 		//loadLanguages
-		Main.langfile = new File("plugins/BattleNexus/languages/", cfg.getString("Basic.language") + ".yml");
+
+		langfile = new HashMap<String,File>();
+
+		//addLanguages
+		langfile.put("de", new File("languages/", "DE.yml"));
+//		langfile.put("en", new File("plugins/BattleNexus/languages/", "en.yml"));
+		langfile.put("en", new File("languages/", "EN.yml"));
+
 		
+		for (File f : langfile.values()) {
+			if(!f.exists()) {
+				f.getParentFile().mkdir();
+				try {
+					saveResource("languages/" + f.getName(), true);
+				} catch(Exception e) {
+					Tools.ConsoleErrorMessage("FATAL ERROR: LANGUAGEFILE NOT FOUND", e);
+					Bukkit.getPluginManager().disablePlugin(this);
+				}
+			}
+		}
+
 		langpath = new File("plugins/BattleNexus/languages/");
 		if(!langpath.exists()) {
 			langpath.mkdir();
 		}
-		if(!langfile.exists()) {
-			langfile.getParentFile().mkdir();
-			try {
-			saveResource("languages/" + cfg.getString("Basic.language") + ".yml", true);
-			} catch(Exception e) {
-				Tools.ConsoleErrorMessage("FATAL ERROR: LANGUAGEFILE NOT FOUND", e);
-				Bukkit.getPluginManager().disablePlugin(this);
-			}
+
+		lang = new HashMap<String,FileConfiguration>();
+		File folder = langpath;
+		File[] listOfFiles = folder.listFiles();
+
+		for (int i = 0; i < listOfFiles.length; i++) {
+			String name = listOfFiles[i].getName();
+			Tools.DebugMessage("Load Language: " + name);
+			lang.put(listOfFiles[i].getName(), YamlConfiguration.loadConfiguration(listOfFiles[i]));
 		}
-		Main.lang = YamlConfiguration.loadConfiguration(Main.langfile);
-		
-		Tools.DebugMessage(Tools.cfgM("Load.LanguageLoaded"));
-		Tools.ConsoleNoticeMessage(Tools.cfgM("Load.AllLoaded"));
+
+
+
+//		langfile = new File("plugins/BattleNexus/languages/", cfg.getString("Basic.language") + ".yml");
+
+//		if(!langfile.exists()) {
+//		langfile.getParentFile().mkdir();
+//		try {
+//			saveResource("languages/" + cfg.getString("Basic.language") + ".yml", true);
+//		} catch(Exception e) {
+//			Tools.ConsoleErrorMessage("FATAL ERROR: LANGUAGEFILE NOT FOUND", e);
+//			Bukkit.getPluginManager().disablePlugin(this);
+//		}
+//	}
+
+//		for (FileConfiguration f : Main.lang.values()) {
+//			lang = YamlConfiguration.loadConfiguration(Main.langfile);
+//		}
+
+		Tools.DebugMessage(Tools.cfgM("Load.LanguageLoaded", null));
+		Tools.ConsoleNoticeMessage(Tools.cfgM("Load.AllLoaded", null));
 	}
-    //------------------------------
-	
-	
+	//------------------------------
+
+
 	//== PLUGIN-INSTANZ ============
 	public static Main getInstance() {
 		return instance;
@@ -174,27 +210,27 @@ public class Main extends JavaPlugin{
 
 
 	//== ECONOMY ==================
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        economy = rsp.getProvider();
-        return economy != null;
-    }
+	private boolean setupEconomy() {
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) {
+			return false;
+		}
+		economy = rsp.getProvider();
+		return economy != null;
+	}
 
 	public static Economy getEconomy() {
 		return economy;
 	}
 	//-----------------------------
 
-	
+
 	//== ARENA MANAGER ============
-    public ArenaManager getArenaManager() {
-        return arenaManager;
-    }
-    //-----------------------------
+	public ArenaManager getArenaManager() {
+		return arenaManager;
+	}
+	//-----------------------------
 }

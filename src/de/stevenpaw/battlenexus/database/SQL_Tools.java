@@ -42,7 +42,7 @@ public class SQL_Tools {
     public static void disconnect() {
         if (MySQL.isConnected()) {
             MySQL.disconnect();
-            Tools.sendToConsole(String.valueOf(Main.prefix) + Tools.cfgM("MySQL.disconnected"));
+            Tools.sendToConsole(String.valueOf(Main.prefix) + Tools.cfgM("MySQL.disconnected", null));
 //			Bukkit.getConsoleSender().sendMessage(String.valueOf(Main.prefix) + "§cDisconnected with MySQL!");
         }
     }
@@ -74,7 +74,7 @@ public class SQL_Tools {
     
     public static void createTable() {
         SQL_Player.createPlayerTable();
-        //SQL_Arena.createArenaTable();
+        SQL_Arenas.createArenaTable();
         //SQL_Weapons.createWeaponsTable();
     }
 }

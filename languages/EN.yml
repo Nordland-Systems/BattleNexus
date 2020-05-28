@@ -1,5 +1,8 @@
-# Offizielle Deutsche Version
+# Official English Version
 # BattleNexus 1.0
+
+
+# MUSS NOCH ÜBERARBEITET WERDEN!!!!!
   
   UnknownError: '&2Unbekannter Fehler!'
   PluginDisabled: '&2Plugin deaktiviert'
@@ -7,6 +10,7 @@
   comingsoon: '&7>> &cKommt bald!'
   VIP: '&cKaufe dir &6VIP&c, um Zugang zu exlusiven Inhalten zu erhalten!'
   Staff: '&cDieser Bereich ist nur für Mitarbeiter!'
+  Test: '&fTest erfolgreich'
   
   Load:
     LanguageLoaded: '&2Sprache "&fDeutsch&2" wurde geladen!'
@@ -18,5 +22,8 @@
     ConFailure: '&cKonnte nicht mit Vault verbinden!'
     
   Commands:
-    ArenaCreated: '&aErfolgreich!'
-    ArenaCreationFailed: '&cDie Arena konnte nicht erstellt werden!'
+    UnknownCommand: '&2Unbekannter Befehl!'
+    Arena:
+      ArenaCreated: '&aErfolgreich!'
+      ArenaCreationFailed: '&cDie Arena konnte nicht erstellt werden!'
+    
