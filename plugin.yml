@@ -5,6 +5,7 @@ author: StevenPaw
 api-version: 1.15
 
 depend: [Vault,MySQL]
+softdepend: [AdvancedMultiLanguage]
 
 
 commands:

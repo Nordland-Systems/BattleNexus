@@ -13,18 +13,38 @@ public class Arena {
     private List<Player> players;
     private Location spawn;
     private GameState state;
+    private List<Kit> kits;
 
-    public Arena(String name, int minPlayers, int maxPlayers, Location spawn) {
+    public Arena(String name, int minPlayers, int maxPlayers, Location spawn, List<Kit> kits, GameState state) {
         this.name = name;
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
         this.players = new ArrayList<Player>();
         this.spawn = spawn;
         this.state = GameState.STARTING;
+        this.kits = kits;
     }
 
-    enum GameState{
-        INGAME, STARTING, FINISHED;
+    public enum GameState{
+        INGAME, STARTING, FINISHED, DISABLED, LOBBY;
+    }
+    
+    public List<Kit> getKits() {
+        return kits;
+    }
+    
+    public List<String> getKitsName() {
+    	List<String> a = new ArrayList<String>();
+    	
+    	for(Kit k : kits) {
+    		a.add(k.getName());
+    	}
+    	
+    	return a;
+    }
+
+    public void addKit(Kit i) {
+        this.kits.add(i);
     }
     
     public GameState getState() {

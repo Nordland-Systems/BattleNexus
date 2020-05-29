@@ -1,5 +1,8 @@
 package de.stevenpaw.battlenexus.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -52,21 +55,24 @@ public class Tools {
 		p.sendMessage(Main.prefix + text);
 	}
 
+	public static String cfgM(String pointer, Player p) {
+		return cfgM(pointer, p, null, null);
+	}
+	
+	public static String cfgM(String pointer, Player p, String a) {
+		return cfgM(pointer, p, a, null);
+	}
 
 	//Get Message from Language
-	public static String cfgM(String pointer, Player p) {
+	public static String cfgM(String pointer, Player p, String a, String b) {
 		String output = "ERROR";
 		if (p != null) {
-//			String language = Main.pcfg.getString("language");
-			Bukkit.getServer().broadcastMessage("lol: " + Main.cfg.getString("Basic.language"));
 			String language = Main.cfg.getString("Basic.language") + ".yml";
-			DebugMessage("Player Basic Language: " + language);
 			if(Bukkit.getPluginManager().isPluginEnabled("AdvancedMultiLanguage")) {
 				language = AdvancedMultiLanguageAPI.getLanguageOfUuid(p.getUniqueId().toString()) + ".yml";
-				DebugMessage("Player API Language: " + language);
 				DebugMessage("MultiLangAPI is used");
 			}
-			
+
 			try {
 				output = ChatColor.translateAlternateColorCodes('&', Main.lang.get(language).getString(pointer));
 				//		String output = Main.cfg.getString(pointer);
@@ -74,13 +80,21 @@ public class Tools {
 				DebugMessage("Couldnt find Message: " + pointer + " | " + e);
 				output = " §4-- ERROR -- ";
 			}
-			DebugMessage("Tried Language: " + language);
 		} else {
-			DebugMessage("Put-in Language: " + "Basic.language");
-			DebugMessage("Tried Language: " + Main.cfg.getString("Basic.language") + ".yml");
 			output = ChatColor.translateAlternateColorCodes('&', Main.lang.get(Main.cfg.getString("Basic.language") + ".yml").getString(pointer));
 		}
 		
+		if(a != null) {
+			output = output.replaceAll("%a%", a);
+		}
+		
+		if(b != null) {
+			output = output.replaceAll("%a%", b);
+		}
+		
+		Date now = new Date();
+		SimpleDateFormat dateform = new SimpleDateFormat("HH:mm:ss-SS");
+			output = output.replaceAll("%Time%", dateform.format(now));
 		
 		return output;
 	}

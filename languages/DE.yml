@@ -2,6 +2,7 @@
 # BattleNexus 1.0
   
   UnknownError: '&2Unbekannter Fehler!'
+  Usage: '&2Benutzung: '
   PluginDisabled: '&2Plugin deaktiviert'
   noPerms: '&cDiesen Befehl darfst du nicht nutzen'
   comingsoon: '&7>> &cKommt bald!'
@@ -20,7 +21,14 @@
     
   Commands:
     UnknownCommand: '&2Unbekannter Befehl!'
+    Admin:
+      Reloaded: '&aNeu geladen'
+      Saved: '&aGespeichert'
     Arena:
-      ArenaCreated: '&aErfolgreich!'
-      ArenaCreationFailed: '&cDie Arena konnte nicht erstellt werden!'
-    
+      ArenaCreated: '&aErfolgreich Arena &f%a% &aerstellt!'
+      ArenaCreationFailed: '&cDie Arena &f%a% &ckonnte nicht erstellt werden!'
+      ArenaRemoved: '&aArena &f%a% &awurde entfernt!'
+      ArenaRemoveFailed: '&cDie Arena konnte nicht entfernt werden!'
+  
+  Arena:
+    StartingArena: '&fArena %ArenaName% startet'

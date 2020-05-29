@@ -11,8 +11,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import de.stevenpaw.battlenexus.commands.Commands;
+import de.stevenpaw.battlenexus.database.SQL_Arenas;
 import de.stevenpaw.battlenexus.database.SQL_Tools;
 import de.stevenpaw.battlenexus.game.ArenaManager;
+import de.stevenpaw.battlenexus.game.KitManager;
 import de.stevenpaw.battlenexus.listener.PlayerListener;
 import de.stevenpaw.battlenexus.utils.Tools;
 import net.md_5.bungee.api.ChatColor;
@@ -59,27 +61,7 @@ public class Main extends JavaPlugin{
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new PlayerListener(), this);
 
-		//runnable
-		Bukkit.getScheduler().runTaskTimer(this, new Runnable()
-		{
-			int time = 100; //or any other number you want to start countdown from
 
-			@Override
-			public void run()
-			{
-				if (this.time == 0)
-				{
-					return;
-				}
-
-				for (final org.bukkit.entity.Player player : Bukkit.getOnlinePlayers())
-				{
-					player.sendMessage(this.time + " second(s) remains!");
-				}
-
-				this.time--;
-			}
-		}, 0L, 20L);
 
 		//Check for successful Economy Hook
 		if(setupEconomy()) {
@@ -95,6 +77,12 @@ public class Main extends JavaPlugin{
 		//setup Commands
 		this.getCommand("bn").setExecutor(new Commands());
 		this.getCommand("bn").setTabCompleter(new Commands());
+		
+		KitManager.createKits();
+		
+		SQL_Arenas.createArenaTable();
+		SQL_Arenas.loadArenas();
+		Tools.DebugMessage("Created Database for Arenas");
 	}
 	//------------------------------
 
@@ -138,16 +126,15 @@ public class Main extends JavaPlugin{
 		langfile = new HashMap<String,File>();
 
 		//addLanguages
-		langfile.put("de", new File("languages/", "DE.yml"));
-//		langfile.put("en", new File("plugins/BattleNexus/languages/", "en.yml"));
-		langfile.put("en", new File("languages/", "EN.yml"));
+		langfile.put("DE", new File("languages/BattleNexus/languages/", "DE.yml"));
+		langfile.put("EN", new File("plugins/BattleNexus/languages/", "EN.yml"));
 
 		
 		for (File f : langfile.values()) {
 			if(!f.exists()) {
 				f.getParentFile().mkdir();
 				try {
-					saveResource("languages/" + f.getName(), true);
+					saveResource("languages/" + f.getName(), false);
 				} catch(Exception e) {
 					Tools.ConsoleErrorMessage("FATAL ERROR: LANGUAGEFILE NOT FOUND", e);
 					Bukkit.getPluginManager().disablePlugin(this);
@@ -164,29 +151,12 @@ public class Main extends JavaPlugin{
 		File folder = langpath;
 		File[] listOfFiles = folder.listFiles();
 
-		for (int i = 0; i < listOfFiles.length; i++) {
-			String name = listOfFiles[i].getName();
+		for (File f : listOfFiles) {
+			String name = f.getName();
 			Tools.DebugMessage("Load Language: " + name);
-			lang.put(listOfFiles[i].getName(), YamlConfiguration.loadConfiguration(listOfFiles[i]));
+			FileConfiguration langfileconfig = YamlConfiguration.loadConfiguration(f);
+			lang.put(name, langfileconfig);
 		}
-
-
-
-//		langfile = new File("plugins/BattleNexus/languages/", cfg.getString("Basic.language") + ".yml");
-
-//		if(!langfile.exists()) {
-//		langfile.getParentFile().mkdir();
-//		try {
-//			saveResource("languages/" + cfg.getString("Basic.language") + ".yml", true);
-//		} catch(Exception e) {
-//			Tools.ConsoleErrorMessage("FATAL ERROR: LANGUAGEFILE NOT FOUND", e);
-//			Bukkit.getPluginManager().disablePlugin(this);
-//		}
-//	}
-
-//		for (FileConfiguration f : Main.lang.values()) {
-//			lang = YamlConfiguration.loadConfiguration(Main.langfile);
-//		}
 
 		Tools.DebugMessage(Tools.cfgM("Load.LanguageLoaded", null));
 		Tools.ConsoleNoticeMessage(Tools.cfgM("Load.AllLoaded", null));

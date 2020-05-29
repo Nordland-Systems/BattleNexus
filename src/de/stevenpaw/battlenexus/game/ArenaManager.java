@@ -12,7 +12,7 @@ import de.stevenpaw.battlenexus.utils.Tools;
 
 public class ArenaManager {
 
-	static HashMap<String, Arena> arenas = new HashMap<String, Arena>();
+	public static HashMap<String, Arena> arenas = new HashMap<String, Arena>();
 
 	//    public List<Arena> arenas = new ArrayList<>();
 	public static Arena getArena(String name){
@@ -21,10 +21,35 @@ public class ArenaManager {
 
 	public static Boolean CreateArena(String name, Integer minP, Integer maxP, Player p) {
 
+		Tools.DebugMessage("CreateArena 1/6");
+		Boolean works = false;
+
+		if(!arenas.containsKey(name)) {
+			Tools.DebugMessage("CreateArena 2/6");
+			List<Kit> standardkit = new ArrayList<Kit>();
+			
+			standardkit.add(KitManager.kits.get("basic"));
+			Tools.DebugMessage("CreateArena 3/6");
+			arenas.put(name, new Arena(name, 1, 2, p.getLocation(), standardkit, Arena.GameState.LOBBY));
+			Tools.DebugMessage("Arena "+name+" created");
+			Tools.DebugMessage("CreateArena 4/6");
+			if(SaveArenas()) {
+				works = true;
+				Tools.DebugMessage("CreateArena 5/6");
+			}
+		}
+
+		Tools.DebugMessage("CreateArena 6/6 - completed");
+		return works;
+	}
+	
+	public static Boolean RemoveArena(String name) {
+
 		Boolean works = false;
 
 		if(arenas.get(name) != null) {
-			arenas.put(name, new Arena(name, 1, 2, p.getLocation()));
+			SQL_Arenas.removeArenaSQL(name);
+			arenas.remove(name);
 			if(SaveArenas()) {
 				works = true;
 			}

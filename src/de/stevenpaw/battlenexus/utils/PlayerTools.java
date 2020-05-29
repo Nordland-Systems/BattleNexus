@@ -8,6 +8,7 @@ public class PlayerTools {
 	
 	public static void SaveInventory(Player p) {		
 		Main.pcfg.set("Players." + p.getName() + ".inventory", p.getInventory().getContents());
+		
 	}
 	
 	public static void getGameState(Player p) {
