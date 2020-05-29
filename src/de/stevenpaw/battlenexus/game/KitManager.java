@@ -16,12 +16,12 @@ public class KitManager {
 	
 	public static void createKits() {
 		Tools.DebugMessage("CreateKits 1/4");
-		ItemStack Stick = new ItemBuilder(Material.STICK).build();
+		ItemStack is = new ItemBuilder(Material.STICK).setDisplayName("Teststab").build();
 		Tools.DebugMessage("CreateKits 2/4");
-		List<ItemStack> is = new ArrayList<ItemStack>();
-		is.add(Stick);
-		Tools.DebugMessage("CreateKits 3/4 | is: " + is.toString());
-		Kit basic = new Kit("basic", 0, 0, is, Kit.AccessState.BLOCKED);
+		List<Weapon> wp = new ArrayList<Weapon>();
+		wp.add(new Weapon("Stick", is, "", "", "", null, 3, null, null, null));
+		Tools.DebugMessage("CreateKits 3/4 | is: " + wp.toString());
+		Kit basic = new Kit("basic", 0, 0, wp, Kit.AccessState.BLOCKED);
 		kits.put(basic.getName(), basic);
 		Tools.DebugMessage("CreateKits 4/4");
 	}

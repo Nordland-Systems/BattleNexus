@@ -3,6 +3,7 @@ package de.stevenpaw.battlenexus.utils;
 import java.util.Arrays;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -43,7 +44,22 @@ public class ItemBuilder {
 		itemMeta.setLore(Arrays.asList(lore));
 		return this;
 	}
-
+	
+	public ItemBuilder addEnchant(Enchantment ench, Integer level) {
+		itemMeta.addEnchant(ench, level, true);
+		return this;
+	}
+	
+	public ItemBuilder setUnbreakable(Boolean unbreak) {
+		itemMeta.setUnbreakable(unbreak);
+		return this;
+	}
+	
+	public ItemBuilder setCustomModelData(Integer data) {
+		itemMeta.setCustomModelData(data);
+		return this;
+	}
+	
 	public ItemStack build() {
 		item.setItemMeta(itemMeta);
 		return item;

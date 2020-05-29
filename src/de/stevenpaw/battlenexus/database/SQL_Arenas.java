@@ -3,21 +3,20 @@ package de.stevenpaw.battlenexus.database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
 import de.stevenpaw.battlenexus.game.Arena;
 import de.stevenpaw.battlenexus.game.Arena.GameState;
+import de.stevenpaw.battlenexus.utils.Tools;
 import de.stevenpaw.battlenexus.game.ArenaManager;
 import de.stevenpaw.battlenexus.game.Kit;
-import de.stevenpaw.battlenexus.game.KitManager;
 import me.vagdedes.mysql.database.MySQL;
 import me.vagdedes.mysql.database.SQL;
 
 public class SQL_Arenas {
 
-	static String ArenaTable = "Arenas";
+	static String ArenaTable = "arenas";
 	//ArenaTable:
 	//   NAME   |   MINPLAYERS   |   MAXPLAYERS   |   STATE   |   KITS   |   CREATION_DATE
 
@@ -47,20 +46,23 @@ public class SQL_Arenas {
 					+ " VALUES ('" + a.getName() + "', '" + a.getMinPlayers() + "', '" + a.getMaxPlayers() + "', '" + a.getState() + "', '" + Kits + "')"));
 		}
 	}
-	
+
 	public static void loadArenas() {
-		List<Object> arenalist = SQL.listGet("name", "state", "!=", "DELETED", ArenaTable);
 		
+		Tools.DebugMessage("Loading Arenas");
+
 		ArenaManager.arenas.clear();
-		
-		for(Object o : arenalist) {
-			String name = "";
-			Integer minPlayers = 0;
-			Integer maxPlayers = 0;
-			Arena.GameState gamestate = GameState.FINISHED;
-			List<Kit> kits = new ArrayList<Kit>();
-			ResultSet rs = MySQL.query("Select * from " + ArenaTable + " where name = " + o.toString());
-			try {
+
+		ResultSet rs = MySQL.query("SELECT * FROM "+ArenaTable);
+
+		try {
+			while(rs.next()) {
+				String name = "";
+				Integer minPlayers = 0;
+				Integer maxPlayers = 0;
+				Arena.GameState gamestate = GameState.FINISHED;
+				List<Kit> kits = new ArrayList<Kit>();
+
 				name = rs.getString("name");
 				minPlayers = rs.getInt("minplayers");
 				maxPlayers = rs.getInt("maxplayers");
@@ -76,28 +78,68 @@ public class SQL_Arenas {
 					gamestate = Arena.GameState.DISABLED;
 				case "LOBBY":
 					gamestate = Arena.GameState.LOBBY;
+
+
+					ArenaManager.arenas.put(name, new Arena(name, minPlayers, maxPlayers, null, kits, gamestate));
 				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-			
-			try {
-				List<String> kitlist = new ArrayList<>(Arrays.asList(rs.getString("kit").split("|")));
-				for (String s : kitlist) {
-					if (KitManager.kits.containsKey(s)) {
-						kits.add(KitManager.kits.get(s));
-					}
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			ArenaManager.arenas.put(name, new Arena(name, minPlayers, maxPlayers, null, kits, gamestate));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
+		Tools.DebugMessage("Arenas loaded: " + ArenaManager.arenas.toString());
+
+
+
+
+		//		for(Object o : arenalist) {
+		//			String os = o.toString();
+		//			Tools.DebugMessage("Name: " + os);
+		//			String name = "";
+		//			Integer minPlayers = 0;
+		//			Integer maxPlayers = 0;
+		//			Arena.GameState gamestate = GameState.FINISHED;
+		//			List<Kit> kits = new ArrayList<Kit>();
+		//			ResultSet rs = MySQL.query("SELECT * FROM "+ArenaTable+" WHERE name='"+os+"'");
+		//			try {
+		//				name = rs.getString("name");
+		//				minPlayers = rs.getInt("minplayers");
+		//				maxPlayers = rs.getInt("maxplayers");
+		//				String state = rs.getString("state");
+		//				switch(state) {
+		//				case "INGAME":
+		//					gamestate = Arena.GameState.INGAME;
+		//				case "STARTING":
+		//					gamestate = Arena.GameState.STARTING;
+		//				case "FINISHED":
+		//					gamestate = Arena.GameState.FINISHED;
+		//				case "DISABLED":
+		//					gamestate = Arena.GameState.DISABLED;
+		//				case "LOBBY":
+		//					gamestate = Arena.GameState.LOBBY;
+		//				}
+		//			} catch (SQLException e) {
+		//				// TODO Auto-generated catch block
+		//				e.printStackTrace();
+		//			}
+		//			
+		//			try {
+		//				List<String> kitlist = new ArrayList<>(Arrays.asList(rs.getString("kit").split("|")));
+		//				for (String s : kitlist) {
+		//					if (KitManager.kits.containsKey(s)) {
+		//						kits.add(KitManager.kits.get(s));
+		//					}
+		//				}
+		//			} catch (SQLException e) {
+		//				// TODO Auto-generated catch block
+		//				e.printStackTrace();
+		//			}
+		//			ArenaManager.arenas.put(name, new Arena(name, minPlayers, maxPlayers, null, kits, gamestate));
+		//		}
+
 	}
-	
+
 	public static void removeArenaSQL(String name) {
 		MySQL.update(new String("DELETE FROM " + ArenaTable + " WHERE name = '" + name + "'"));
 	}

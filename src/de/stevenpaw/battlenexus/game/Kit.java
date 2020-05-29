@@ -1,7 +1,6 @@
 package de.stevenpaw.battlenexus.game;
 
 import java.util.List;
-import org.bukkit.inventory.ItemStack;
 
 public class Kit {
 
@@ -9,18 +8,23 @@ public class Kit {
     private String name;
     private double speed;
     private double jumpheight;
-    private List<ItemStack> items;
+    private List<Weapon> weapons;
     private AccessState access;
+    private List<CanUse> canuse;
 
     
     enum AccessState{
     	PUBLIC, VIP, ADMIN, BLOCKED;
     }
-    public Kit(String name, double speed, double jumpheight, List<ItemStack> items, AccessState access) {
+    enum CanUse{
+    	JUMPPAD, SPEEDPAD, HIDEPAD;
+    }
+    
+    public Kit(String name, double speed, double jumpheight, List<Weapon> weapons, AccessState access) {
         this.name = name;
         this.speed = speed;
         this.jumpheight = jumpheight;
-        this.items = items;
+        this.weapons = weapons;
         this.access = access;
     }
     
@@ -51,15 +55,23 @@ public class Kit {
     	return access;
     }
     
-    public void setItems(List<ItemStack> newitems) {
-    	items = newitems;
+    public void setWeapons(List<Weapon> newitems) {
+    	weapons = newitems;
     }
     
-    public void addItem(ItemStack newitem) {
-    	items.add(newitem);
+    public void addWeapon(Weapon newweapon) {
+    	weapons.add(newweapon);
     }
     
-    public List<ItemStack> getItems() {
-    	return items;
+    public List<Weapon> getWeapons() {
+    	return weapons;
     }
+
+	public List<CanUse> getCanUse() {
+		return canuse;
+	}
+
+	public void setCanUse(List<CanUse> canuse) {
+		this.canuse = canuse;
+	}
 }

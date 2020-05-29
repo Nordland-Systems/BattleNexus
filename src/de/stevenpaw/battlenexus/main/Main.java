@@ -13,6 +13,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import de.stevenpaw.battlenexus.commands.Commands;
 import de.stevenpaw.battlenexus.database.SQL_Arenas;
 import de.stevenpaw.battlenexus.database.SQL_Tools;
+import de.stevenpaw.battlenexus.database.SQL_Weapons;
 import de.stevenpaw.battlenexus.game.ArenaManager;
 import de.stevenpaw.battlenexus.game.KitManager;
 import de.stevenpaw.battlenexus.listener.PlayerListener;
@@ -82,7 +83,10 @@ public class Main extends JavaPlugin{
 		
 		SQL_Arenas.createArenaTable();
 		SQL_Arenas.loadArenas();
-		Tools.DebugMessage("Created Database for Arenas");
+		Tools.DebugMessage("Created/Loaded Database for Arenas");
+		SQL_Weapons.createWeaponTable();
+		SQL_Weapons.loadWeapons();
+		Tools.DebugMessage("Created/Loaded Database for Weapons");
 	}
 	//------------------------------
 
