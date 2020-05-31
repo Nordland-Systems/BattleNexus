@@ -18,25 +18,9 @@ public class SQL_Tools {
     public static String User;
     public static String Password;
     
-//    static {
-//        MySQL.Host = Main.cfg.getString("MySQL.host");
-//        MySQL.Port = Main.cfg.getString("MySQL.port");
-//        MySQL.Database = Main.cfg.getString("MySQL.database");
-//        MySQL.User = Main.cfg.getString("MySQL.user");
-//        MySQL.Password = Main.cfg.getString("MySQL.password");
-//    }
     
     public static void connect() {
     	MySQL.connect();
-//        if (!isConnected()) {
-//            try {
-//                MySQL.con = DriverManager.getConnection("jdbc:mysql://" + MySQL.Host + ":" + MySQL.Port + "/" + MySQL.Database, MySQL.User, MySQL.Password);
-//                Bukkit.getConsoleSender().sendMessage(String.valueOf(Main.prefix) + "§aConnected with MySQL!");
-//            }
-//            catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
     }
     
     public static void disconnect() {
@@ -46,35 +30,16 @@ public class SQL_Tools {
 //			Bukkit.getConsoleSender().sendMessage(String.valueOf(Main.prefix) + "§cDisconnected with MySQL!");
         }
     }
-//    
-//    public static boolean isConnected() {
-//        return MySQL.con != null;
-//    }
-//    
-//    public static void update(final String query) {
-//        if (isConnected()) {
-//            try {
-//                MySQL.con.createStatement().executeUpdate(query);
-//            }
-//            catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-    
-//    public static ResultSet getResult(final String query) {
-//        try {
-//            return MySQL.con.createStatement().executeQuery(query);
-//        }
-//        catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
     
     public static void createTable() {
-        SQL_Player.createPlayerTable();
-        SQL_Arenas.createArenaTable();
-        //SQL_Weapons.createWeaponsTable();
+		SQL_Arenas.createArenaTable();
+		SQL_Arenas.loadArenas();
+		Tools.DebugMessage("Created/Loaded Database for Arenas");
+		SQL_Locations.createLocationTable();
+		SQL_Locations.loadLocations();
+		Tools.DebugMessage("Created/Loaded Database for Locations");
+		SQL_Weapons.createWeaponTable();
+		SQL_Weapons.loadWeapons();
+		Tools.DebugMessage("Created/Loaded Database for Weapons");
     }
 }

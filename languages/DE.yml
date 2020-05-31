@@ -10,6 +10,10 @@
   Staff: '&cDieser Bereich ist nur für Mitarbeiter!'
   Test: '&fTest erfolgreich'
   
+  Stats:
+    Players:
+      NotKnown: '&cDiese Statistik ist unbekannt'
+  
   Load:
     LanguageLoaded: '&2Sprache "&fDeutsch&2" wurde geladen!'
     ConfigsLoaded: '&2Konfigurationen geladen!'

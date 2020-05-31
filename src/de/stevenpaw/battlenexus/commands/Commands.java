@@ -55,8 +55,9 @@ public class Commands implements CommandExecutor, TabCompleter{
 					//STuff to do
 					works = true;
 					break;
-				case "testlang":
+				case "test":
 					Tools.broadcastPlayer(Tools.cfgM("Test",p), p);
+					works = true;
 					break;
 				case "testcountdown":
 					//runnable
@@ -130,9 +131,8 @@ public class Commands implements CommandExecutor, TabCompleter{
 					//STuff to do						
 					works = true;
 					break;
-				case "testlang":
-					Tools.broadcastPlayer(Tools.cfgM(b,p), p);
-					works = true;
+				case "test":
+					works = CMD_Test.CMDgroup_Test(sender, cmd, label, args);
 					break;
 				default:
 					Tools.broadcastPlayer(Tools.cfgM("Commands.UnknownCommand", p), p);
@@ -174,7 +174,13 @@ public class Commands implements CommandExecutor, TabCompleter{
 						Tools.broadcastPlayer(Tools.cfgM("Usage", p) + "/bn arena <create/remove/start> <name> (...)", p);
 					}
 					break;
-
+				case "test":
+					works = CMD_Test.CMDgroup_Test(sender, cmd, label, args);
+					break;
+				default:
+					Tools.broadcastPlayer(Tools.cfgM("Commands.UnknownCommand", p), p);
+					//STuff to do
+					works = false;
 				}
 			}
 		}
@@ -195,7 +201,7 @@ public class Commands implements CommandExecutor, TabCompleter{
 			options.add("admin");
 			options.add("arena");
 			options.add("modify");
-			options.add("testlang");
+			options.add("test");
 			options.add("testcountdown");
 
 			return options;
@@ -222,6 +228,8 @@ public class Commands implements CommandExecutor, TabCompleter{
 					options.add(s);
 				}
 				break;
+			case "test":
+				options.addAll(CMD_Test.TabComplete(args));
 			}
 			return options;
 		}

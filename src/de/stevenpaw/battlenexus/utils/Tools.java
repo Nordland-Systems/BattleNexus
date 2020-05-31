@@ -40,7 +40,7 @@ public class Tools {
 	public static void DebugMessage(String text) {
 		if (Main.debug) {
 			ConsoleCommandSender console = Bukkit.getConsoleSender();
-			console.sendMessage(Main.prefix + "§2[-DEBUG-]" + text);
+			console.sendMessage(Main.prefix + "§2[-DEBUG-] " + text);
 		}
 	}
 

@@ -16,7 +16,7 @@ import me.vagdedes.mysql.database.SQL;
 
 public class SQL_Arenas {
 
-	static String ArenaTable = "arenas";
+	static String ArenaTable = "bn_arenas";
 	//ArenaTable:
 	//   NAME   |   MINPLAYERS   |   MAXPLAYERS   |   STATE   |   KITS   |   CREATION_DATE
 

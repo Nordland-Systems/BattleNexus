@@ -20,7 +20,7 @@ import me.vagdedes.mysql.database.MySQL;
 import me.vagdedes.mysql.database.SQL;
 
 public class SQL_Weapons {
-	static String WeaponsTable = "weapons";
+	static String WeaponsTable = "bn_weapons";
 	//ArenaTable:
 	//   string-NAME   |   itemstack-ITEMSTACK   |   string-DISPLAYNAME   |   string-LORE1   |   string-LORE2
 	//   list<enchantment,integer>-ENCHANTMENT   |   int-AMOUNT   |   list<feature>-FEATURES   |   int-CUSTOMMODELDATA   |   auto-CREATION_DATE
