@@ -30,8 +30,10 @@ public class SQL_Arenas {
 
 	public static void saveArenas() {
 
-
 		for(Arena a : ArenaManager.arenas.values()) {
+			
+			MySQL.update("DELETE FROM " + ArenaTable + " WHERE name = '" + a.getName() + "'");
+			
 			String Kits;
 			StringBuilder SB = new StringBuilder();
 			if (!a.getKits().equals(null)) {
@@ -43,7 +45,8 @@ public class SQL_Arenas {
 			}
 			Kits = SB.toString();
 			MySQL.update(new String ("INSERT INTO " + ArenaTable +" (name, minplayers, maxplayers, state, kit)"
-					+ " VALUES ('" + a.getName() + "', '" + a.getMinPlayers() + "', '" + a.getMaxPlayers() + "', '" + a.getState() + "', '" + Kits + "')"));
+					+ " VALUES ('" + a.getName() + "', '" + a.getMinPlayers() + "', '" + a.getMaxPlayers() + "', "
+							+ "'" + a.getState().toString() + "', '" + Kits + "')"));
 		}
 	}
 
@@ -146,7 +149,7 @@ public class SQL_Arenas {
 
 	public static boolean arenaExists(final String arenaname) {
 		try {
-			final ResultSet res = MySQL.query("SELECT * FROM " + ArenaTable + "  WHERE Playername= '" + arenaname + "'");
+			final ResultSet res = MySQL.query("SELECT * FROM " + ArenaTable + "  WHERE name= '" + arenaname + "'");
 			return res.next() && res.getString("Playername") != null;
 		}
 		catch (SQLException e) {

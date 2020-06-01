@@ -21,7 +21,7 @@ public class Arena {
         this.maxPlayers = maxPlayers;
         this.players = new ArrayList<Player>();
         this.spawn = spawn;
-        this.state = GameState.STARTING;
+        this.state = state;
         this.kits = kits;
     }
 

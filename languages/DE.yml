@@ -35,4 +35,10 @@
       ArenaRemoveFailed: '&cDie Arena konnte nicht entfernt werden!'
   
   Arena:
+    Status:
+      INGAME: '&cim Spiel'
+      STARTING: '&aSpiel startet'
+      FINISHED: '&7Spiel beendet'
+      DISABLED: '&4deaktiviert'
+      LOBBY: '&2wartet'
     StartingArena: '&fArena %ArenaName% startet'

@@ -15,6 +15,7 @@ import de.stevenpaw.battlenexus.database.SQL_Tools;
 import de.stevenpaw.battlenexus.game.ArenaManager;
 import de.stevenpaw.battlenexus.game.KitManager;
 import de.stevenpaw.battlenexus.listener.PlayerListener;
+import de.stevenpaw.battlenexus.utils.SignTools;
 import de.stevenpaw.battlenexus.utils.Tools;
 import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
@@ -30,6 +31,9 @@ public class Main extends JavaPlugin{
 
 	public static File pfile;
 	public static FileConfiguration pcfg;
+	
+	public static File signfile;
+	public static FileConfiguration signcfg;
 
 	public static File langpath;
 	public static HashMap<String, File> langfile;
@@ -59,6 +63,7 @@ public class Main extends JavaPlugin{
 		//Listener laden
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new PlayerListener(), this);
+		pm.registerEvents(new SignTools(), this);
 
 
 
@@ -104,6 +109,10 @@ public class Main extends JavaPlugin{
 		//loadplayerdata
 		pfile = new File("plugins/BattleNexus", "players.yml");
 		pcfg = YamlConfiguration.loadConfiguration(Main.pfile);
+		
+		//loadsigndata
+		signfile = new File("plugins/BattleNexus", "signs.yml");
+		signcfg = YamlConfiguration.loadConfiguration(Main.signfile);
 
 		//loadPrefix
 		String prefixRaw = cfg.getString("Basic.prefix");
