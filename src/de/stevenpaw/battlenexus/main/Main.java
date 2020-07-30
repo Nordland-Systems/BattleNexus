@@ -106,24 +106,31 @@ public class Main extends JavaPlugin{
 		cfgfile = new File("plugins/BattleNexus", "config.yml");
 		cfg = YamlConfiguration.loadConfiguration(Main.cfgfile);
 
+		//loadPrefix
+		String prefixRaw = cfg.getString("Basic.prefix");
+		prefix = ChatColor.translateAlternateColorCodes('&', prefixRaw);
+		
 		//loadplayerdata
 		pfile = new File("plugins/BattleNexus", "players.yml");
 		pcfg = YamlConfiguration.loadConfiguration(Main.pfile);
 		
-		//loadsigndata
-		signfile = new File("plugins/BattleNexus", "signs.yml");
-		signcfg = YamlConfiguration.loadConfiguration(Main.signfile);
-
-		//loadPrefix
-		String prefixRaw = cfg.getString("Basic.prefix");
-		prefix = ChatColor.translateAlternateColorCodes('&', prefixRaw);
-
 		//loadDebug
 		if(cfg.getBoolean("Debug")) {
 			debug = true;
 			Tools.DebugMessage("Debug-Mode is active! Don't use this if you have no Problems!");
 		} else debug = false;
 
+		//loadsigndata
+		signfile = new File("plugins/BattleNexus", "signs.yml");
+		signcfg = YamlConfiguration.loadConfiguration(Main.signfile);
+		SignTools.loadSigns();
+		
+		//loadsigndata
+//		saveResource("signs.yml", false);
+//		signfile = new File("plugins/BattleNexus", "signs.yml");
+//		signcfg = YamlConfiguration.loadConfiguration(Main.signfile);
+//		SignTools.loadSigns();
+		
 		Tools.DebugMessage("Loaded all Configs!");
 
 

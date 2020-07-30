@@ -15,7 +15,11 @@ public class BNSign {
         this.loc = loc;
     }
     
-    public enum Type{
+    public BNSign() {
+		//for empty use
+	}
+
+	public enum Type{
     	JOIN, LEADERBOARD, TELEPORT
     }
     

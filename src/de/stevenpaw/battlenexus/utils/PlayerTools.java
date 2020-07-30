@@ -50,39 +50,39 @@ public class PlayerTools {
 		
 		
 		//V2
-		Tools.DebugMessage("Playertools Itemloader - §fStarting | Player: " + p.getName());
+		Tools.DebugMessage("[InventoryLoader] 0/5 §fStarting | Player: " + p.getName());
 		ArrayList<ItemStack> content = new ArrayList<ItemStack>();
-		Tools.DebugMessage("Playertools Itemloader - §fStarted");
-		Tools.DebugMessage("Playertools Itemloader - Player: " + p.getName() + " | Length: " + Main.pcfg.getList("Players." + p.getName() + ".inventory").size());
+		Tools.DebugMessage("[InventoryLoader] 1/5 §fStarted");
+		Tools.DebugMessage("[InventoryLoader] 1/5 Player: " + p.getName() + " | Length: " + Main.pcfg.getList("Players." + p.getName() + ".inventory").size());
 		
 		for(int i = 0; i < Main.pcfg.getList("Players." + p.getName() + ".inventory").size();i++) {
-			Tools.DebugMessage("Playertools Itemloader - §fStart Load Item: #" + i);
+			Tools.DebugMessage("[InventoryLoader] 2/5 §fStart Load Item: #" + i);
 			if(Main.pcfg.getList("Players." + p.getName() + ".inventory").get(i) != null) {
 				content.add((ItemStack) Main.pcfg.getList("Players." + p.getName() + ".inventory").get(i));
-				Tools.DebugMessage("Playertools Itemloader - §fLoading Item: #" + i + "...");
+				Tools.DebugMessage("[InventoryLoader] 2/5 §fLoading Item: #" + i + "...");
 			} else {
 				content.add(null);
-				Tools.DebugMessage("Playertools Itemloader - §7Loading Null: #" + i + "...");
+				Tools.DebugMessage("[InventoryLoader] 2/5 §7Loading Null: #" + i + "...");
 			}
 		}
-		Tools.DebugMessage("Playertools Itemloader - §fLoaded Inventory");
-		Tools.DebugMessage("Playertools Itemloader - §fAdding Inventory...");
+		Tools.DebugMessage("[InventoryLoader] 3/5 §fLoaded Inventory");
+		Tools.DebugMessage("[InventoryLoader] 3/5 §fAdding Inventory...");
 		ItemStack[] items = new ItemStack[content.size()];
 		for (int i = 0; i < content.size(); i++) {
 			ItemStack item = content.get(i);
 			if (item != null) {
 				items[i] = item;
-				Tools.DebugMessage("Playertools Itemloader - §fAdding Item: #" + i);
+				Tools.DebugMessage("[InventoryLoader] 3/5 §fAdding Item: #" + i);
 			} else {
 				items[i] = null;
-				Tools.DebugMessage("Playertools Itemloader - §7Adding Null: #" + i);
+				Tools.DebugMessage("[InventoryLoader] 3/5 §7Adding Null: #" + i);
 			}
 		}
-		Tools.DebugMessage("Playertools Itemloader - §fAdded Inventory");
-		Tools.DebugMessage("Playertools Itemloader - §fSetting Inventory...");
+		Tools.DebugMessage("[InventoryLoader] 4/5 §fAdded Inventory");
+		Tools.DebugMessage("[InventoryLoader] 4/5 §fSetting Inventory...");
 		p.getInventory().setContents(items);
-		Tools.DebugMessage("Playertools Itemloader - §fInventory set!");
-		Tools.DebugMessage("Playertools Itemloader - §fFinished");
+		Tools.DebugMessage("[InventoryLoader] 5/5 §fInventory set!");
+		Tools.DebugMessage("[InventoryLoader] 5/5 §fFinished");
 	}
 
 
